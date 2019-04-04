@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -e
+
+PORTS=${PORTS:-$PORT}
+
+if [[ -z "$PORTS" ]]; then
+  echo "PORTS env must be specified as comma-separated or space-separated list of port numbers." >&2
+  exit 1
+fi
+
+TARGET_IP=$(ip route show default | awk '/default/ {print $3}')
+
+spaceSeparatedPorts="$(echo ${PORTS} | sed -E 's/,/ /g')"
+
+for port in ${spaceSeparatedPorts}; do
+  echo Redirecting incoming ${port}/tcp to Docker host at ${TARGET_IP}.
+  socat TCP-LISTEN:${port},fork TCP:${TARGET_IP}:${port} &
+done
+
+# Leave it running forever:
+tail -f /dev/null

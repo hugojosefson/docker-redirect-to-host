@@ -1,4 +1,5 @@
 FROM alpine
-RUN apk add --no-cache iptables
-COPY redirect .
-CMD ./redirect
+RUN apk add --no-cache bash socat tini
+COPY redirect-to-host .
+ENTRYPOINT ["/sbin/tini"]
+CMD ["./redirect-to-host"]

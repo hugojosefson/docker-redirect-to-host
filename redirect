@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-
-OWN_IP=$(ip address show dev eth0 | awk '/inet /{print $2}' | cut -d/ -f 1)
-DESTINATION_IP=$(ip route show default | awk '/default/ {print $3}')
-
-echo Redirecting all incoming traffic on ${OWN_IP} to ${DESTINATION_IP}.
-
-iptables -t nat -A PREROUTING -i eth0 -d ${OWN_IP} -j DNAT --to-destination ${DESTINATION_IP}
-sleep 10000d
