@@ -8,7 +8,7 @@ service you wish to develop and run locally on the host.
 The other services in the stack can continue try to access the service
 like normal, and the requests will be forwarded up to the host.
 
-Make sure the service you are developing listen on `0.0.0.0` with the
+Make sure the service you are developing listens on `0.0.0.0` with the
 relevant port. Then if it needs to contact the other services, make
 sure their ports are published, so they can be accessed on `localhost`
 from the service running on the host.
@@ -19,7 +19,7 @@ Given `*.local.example.com` is registered in DNS as `127.0.0.1`.
 
 In the `docker-compose.yml` file, where you want to replace
 `example-backend` with `redirect-to-host` so you can develop and run
-`example-backend` on the host:
+`example-backend` in your IDE on the host:
 
 ```yaml
 version: "3.7"
