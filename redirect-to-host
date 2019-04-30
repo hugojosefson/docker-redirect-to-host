@@ -2,6 +2,18 @@
 
 set -e
 
+function canResolveHost() {
+  nslookup $1 >/dev/null 2>&1
+}
+
+function getTargetIp() {
+  if canResolveHost host.docker.internal; then
+    echo host.docker.internal
+  else
+    ip route show default | awk '/default/ {print $3}'
+  fi
+}
+
 PORTS=${PORTS:-$PORT}
 
 if [[ -z "$PORTS" ]]; then
@@ -9,7 +21,7 @@ if [[ -z "$PORTS" ]]; then
   exit 1
 fi
 
-TARGET_IP=$(ip route show default | awk '/default/ {print $3}')
+TARGET_IP=${TARGET_IP:-$(getTargetIp)}
 
 spaceSeparatedPorts="$(echo ${PORTS} | sed -E 's/,/ /g')"
 
