@@ -14,7 +14,7 @@ function getTargetIp() {
   fi
 }
 
-PORTS=${PORTS:-$PORT}
+PORTS=${PORTS:-$PORT $ADMIN_PORT}
 
 if [[ -z "$PORTS" ]]; then
   echo "PORTS env must be specified as comma-separated or space-separated list of port numbers." >&2
